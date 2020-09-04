@@ -1,0 +1,18 @@
+server:
+  port: ${PORT:8080}
+
+# Documentation
+springdoc:
+  api-docs:
+    enabled: true
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+  version: 1.0-SNAPSHOT
+  show-actuator: true
+  group-configs:
+    - group: Rest Controllers (Spring MVC)
+      packages-to-scan: com.datastax.examples.resources
