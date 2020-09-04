@@ -4,6 +4,17 @@
 
 Start gitpod
 
+```diff 
+@@ ONLINE in GITPOD @@ 
+```
+
+**✅  Open gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/tree/master/spring-boot-todo-app)
+
+Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/workspace/cassandra-workshop-series`. These URL's are dynamic and we cannot provide clickable links in advance. You will need to copy-paste `<your_uid>.<your_region>` as we will insert them in each URL during the exercises.
+
+
 First step: Upload your Astra secure bundle.
 
 To upload a file to gitpod, you need to select a folder in the left hand explorer panel first. Select the folder todobackend-cassandra
