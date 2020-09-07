@@ -6,6 +6,19 @@
 
 <img width="600" alt="Screenshot 2020-09-07 at 13 08 27" src="https://user-images.githubusercontent.com/20337262/92386378-9847d480-f10b-11ea-9782-d825f33a5182.png">
 
+
+## Table of Contents
+
+| Title  | Description
+|---|---|
+| **Slide deck** | [Slide deck for the workshop](slides/Presentation.pdf) |
+| **0. Create your Astra instance** | [Create your Astra instance](#exercise-0---preparations) |
+| **1. Test the connection to Astra** | [Test the connection to Astra](#exercise-1---test-the-connection-to-astra) |
+| **2. Create schema and insert test data** | [Create schema and insert test data](#exercice-2---create-schema-and-test-some-inserts) |
+| **3. Build the main app** | [Build the main app](#exercise-3---building-the-app) |
+| **4. Test with Swagger** | [Test with Swagger](#exercise-4---test-the-api-with-swagger) |
+
+
 ## Exercise 0 - Preparations ##
 
 Create a database with keyspace `todoapp` on DataStax Astra.
@@ -70,6 +83,8 @@ Your output should end like this:
 [INFO] Finished at: 2020-09-02T09:11:36Z
 [INFO] ------------------------------------------------------------------------
 ```
+
+[🏠 Back to Table of Contents](#table-of-contents)
 
 ## Exercise 1 - Test the connection to Astra ##
 
@@ -238,6 +253,9 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Finished at: 2020-09-07T08:18:24Z
 [INFO] ------------------------------------------------------------------------
 ```
+
+[🏠 Back to Table of Contents](#table-of-contents)
+
 
 ## Exercice 2 - Create schema and test some inserts
 
@@ -426,6 +444,8 @@ Check in the Astra cql shell to check if the data is there.
 Success!
 
 Now we can move on to implementing our rest controllers with Spring boot.
+
+[🏠 Back to Table of Contents](#table-of-contents)
 
 
 ## Exercise 3 - Building the App ##
@@ -678,6 +698,9 @@ You should see the Swagger UI:
 
 Well done! 
 
+[🏠 Back to Table of Contents](#table-of-contents)
+
+
 ## Exercise 4 - Test the API with Swagger ##
 
 Play with Swagger.
@@ -693,6 +716,9 @@ You will see the used `curl` command (you can also try this in any terminal), an
 Try inserting some tasks and compare with output in the Astra cqlsh console. 
 
 Thanks for doing the exercises!
+
+[🏠 Back to Table of Contents](#table-of-contents)
+
 
 ## Bonus Exercise - Test with Todo MVC, client GUI and API specs ##
 
