@@ -1,5 +1,9 @@
 ## 🎓🔥 Build a Java Microservice with Astra and Spring 🔥🎓
 
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app) 
+[![License Apache2](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Discord](https://img.shields.io/discord/685554030159593522)](https://discord.com/widget?id=685554030159593522&theme=dark)
+
 ## Exercise 0 - Preparations ##
 
 Create a database with keyspace `todoapp` on DataStax Astra.
@@ -428,7 +432,42 @@ Let's move away from the tests and have a look at our Spring application.
 
 For the minimal architecture, we need the model, a repository, a controller and the driver configuration.
 
-Let's look at the repositories first:
+Let's start with the driver configuration. The bean is defined and configured in the CassandraDriverConfig.java class:
+
+```java
+/**
+ * Configuration of connectivity with Cassandra.
+ */
+@Configuration
+public class CassandraDriverConfig {
+    
+    @Bean
+    public CqlSession cqlSession() {
+        return CqlSession.builder().build();
+    }
+
+}
+```
+
+By default, the driver will take the application.conf from the resources folder to configure this connection.
+
+
+As before, we are using the following Task model:
+
+```java
+public interface TodoAppSchema {
+  
+    /** Constants for table todo_tasks */
+    String TABLE_TODO_TASKS     = "todo_tasks";
+    String TASK_COL_UID         = "uid";
+    String TASK_COL_TITLE       = "title";
+    String TASK_COL_COMPLETED   = "completed";
+    String TASK_COL_OFFSET      = "offset";
+  
+}
+```
+
+This is implemented in the class Task.java
 
 First we have the public interface `TodoListRepository.java`
 
@@ -464,3 +503,85 @@ This defines the API that we will expose:
 The we have the Cassandra specific implementation of the interface, taking into account the public Task interface that we saw earlier in our tests.
 
 This is a big file, so won't copy it here. In a nutshell, it implements each of the interface functions so they can be executed via the driver.
+
+For example, here is the insert and update of a Task:
+
+```java
+    @Override
+    public void upsert(Task dto) {
+        Assert.notNull(dto, "Task should not be null");
+        Assert.notNull(dto.getUuid(), "Task 'uid' should not be null");
+        /* 
+         * No Prepared Statements Here simply define the needed query.
+         *
+         * INSERT into todo_tasks(uid, title, offset, completed)
+         * VALUES (uuid(), 'One', 1, true);
+         */
+        SimpleStatement stmtInsertTask = SimpleStatement.builder(""
+                + "INSERT INTO todo_tasks(uid, title, offset, completed)" 
+                + "VALUES (?, ?, ?, ?)")
+                .addPositionalValue(dto.getUuid())
+                .addPositionalValue(dto.getTitle())
+                .addPositionalValue(dto.getOrder())
+                .addPositionalValue(dto.isCompleted())
+                .build();
+        cqlSession.execute(stmtInsertTask);
+    }
+```
+
+And finally we have the RestController `TodoListRestController.java`, which implements the REST API.
+
+Here for example the creation of a new task:
+
+```java
+    /**
+     * CREATE = Create a new Task (POST)
+     */
+    @Operation(
+            summary = "Create a new task",
+            description = "POST is the proper http verb when you cannot provide the full URL (including id)",
+            tags = { "create" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                            description = "The task has been successfully created",
+                            content = @Content(schema = @Schema(implementation = Task.class))),
+            @ApiResponse(responseCode = "400", description = "Title is blank but is mandatory"),
+            @ApiResponse(responseCode = "500", description = "An error occur in storage") })
+    @RequestMapping(
+            value = "/",
+            method = POST,
+            produces = APPLICATION_JSON_VALUE,
+            consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Task> create(HttpServletRequest request,
+            @RequestBody
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Only field <b>title</b> is required in the following JSON object", 
+                    required = true, 
+                    content = @Content(schema = @Schema(implementation = Task.class)))
+            Task taskCreationRequest)
+    throws URISyntaxException {
+        Assert.notNull(taskCreationRequest, "You must provide a Task in BODY");
+        Assert.hasLength(taskCreationRequest.getTitle(), "Title is a required field to create a task");
+        logger.info("Create new Task at {} with title {}",
+                request.getRequestURL().toString(), taskCreationRequest.getTitle());
+        Task dto = new Task(UUID.randomUUID(),
+                taskCreationRequest.getTitle(),
+                taskCreationRequest.isCompleted(),
+                taskCreationRequest.getOrder());
+        todoRepository.upsert(dto);
+        // Created
+        return ResponseEntity.ok(dto);
+    }
+```
+
+Now let's run the app:
+
+```
+mvn spring-boot:run
+```
+
+
+
+
+
+
