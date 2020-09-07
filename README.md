@@ -20,6 +20,8 @@ If you already have an Astra database, you can reuse it, but please create a new
 
 Once your database is created and ready to use, download the secure connect bundle and save it locally. We will need to upload this bundle in the next step. Keep it as a zip, there is no need to unzip the file.
 
+<img width="600" alt="Screenshot 2020-09-07 at 09 10 01" src="https://user-images.githubusercontent.com/20337262/92366367-f6b18a80-f0ec-11ea-8532-da8644b49cd7.png">
+
 To get coding, start gitpod. You will need to be signed in to Github:
 
 **✅  Open gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
