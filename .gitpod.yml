@@ -1,4 +1,5 @@
 tasks:
+  - init: cd spring-boot-tod-app
   - init: mvn install -Dmaven.test.skip=true
 
 ports:
