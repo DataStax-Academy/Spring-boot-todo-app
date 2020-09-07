@@ -1,7 +1,9 @@
-tasks:
-  #- init: echo "Welcome!"
-  #- command: cd spring-boot-tod-app
-  #- command: mvn install -Dmaven.test.skip=true
+tasks 
+  - name: build
+    before: cd spring-boot-todo-app
+    init: mvn clean compile
+    command: mvn spring-boot:run
+    openMode: split-right=true
 
 ports:
   - port: 3000-8999
