@@ -664,6 +664,8 @@ The API is now available on port 8080.
 
 Gitpod encourages you to open a browser:
 
+<img width="600" alt="Screenshot 2020-09-07 at 16 05 51" src="https://user-images.githubusercontent.com/20337262/92401408-7e1af000-f125-11ea-8854-fd71911b49ea.png">
+
 Note the custom URL that gitpod generates for public access through port 8080, the port is appended at the beginning of the link:
 
 ```
@@ -671,6 +673,8 @@ https://8080-<your-uuid>.<your-region>.gitpod.io/swagger-ui/index.html?configUrl
 ```
 
 You should see the Swagger UI:
+
+<img width="600" alt="Screenshot 2020-09-07 at 16 09 39" src="https://user-images.githubusercontent.com/20337262/92401468-a571bd00-f125-11ea-8b62-392f42f88f12.png">
 
 Well done! 
 
