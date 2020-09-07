@@ -18,9 +18,13 @@ User: KVUser
 Password: KVPassword
 ```
 
-If you already have an Astra database, you can reuse it, but please create a new keyspace by name `todoapp`
+If you already have an Astra database, you can reuse it, but please create a new keyspace by name `todoapp`:
+
+<img width="600" alt="Screenshot 2020-09-07 at 09 10 32" src="https://user-images.githubusercontent.com/20337262/92366057-902c6c80-f0ec-11ea-9903-897abc4a7ab8.png">
 
 Once your database is created and ready to use, download the secure connect bundle from the main connection dialog page and save it locally. We will need to upload this bundle in the next step. Keep it as a zip, there is no need to unzip the file.
+
+<img width="600" alt="Screenshot 2020-09-07 at 09 10 01" src="https://user-images.githubusercontent.com/20337262/92366367-f6b18a80-f0ec-11ea-8532-da8644b49cd7.png">
 
 To get coding, start gitpod. You will need to be signed in to Github:
 
@@ -305,6 +309,8 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 ```
 
 We can verify that the table has been created by logging into the Astra CQLSH console:
+
+<img width="500" alt="Screenshot 2020-09-07 at 09 24 44" src="https://user-images.githubusercontent.com/20337262/92366244-cbc73680-f0ec-11ea-8d49-e83daf6ab444.png">
 
 ```
 Logging in with cqlsh
