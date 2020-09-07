@@ -1,2 +1,5 @@
+tasks:
+  - init: mvn install -Dmaven.test.skip=true
+
 ports:
   - port: 3000-8999
