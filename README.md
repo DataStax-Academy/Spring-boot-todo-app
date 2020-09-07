@@ -709,9 +709,15 @@ To list all todos that are currently in the database:
 
 Select the option `GET /api/v1/todos/ Retrieve the complete list of tasks`
 
+<img width="600" alt="Screenshot 2020-09-07 at 16 24 43" src="https://user-images.githubusercontent.com/20337262/92402503-92f88300-f127-11ea-8f21-382580d776e2.png">
+
 Then opt for `Try it out` and `Execute`.
 
+<img width="600" alt="Screenshot 2020-09-07 at 16 24 54" src="https://user-images.githubusercontent.com/20337262/92402588-b4596f00-f127-11ea-8a7c-0980a1e0507d.png">
+
 You will see the used `curl` command (you can also try this in any terminal), and the response from the server.
+
+<img width="600" alt="Screenshot 2020-09-07 at 16 25 19" src="https://user-images.githubusercontent.com/20337262/92402638-caffc600-f127-11ea-9f06-6e44bd5477c1.png">
 
 Try inserting some tasks and compare with output in the Astra cqlsh console. 
 
