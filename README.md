@@ -680,6 +680,30 @@ Well done!
 
 ## Exercise 4 - Test the API with Swagger ##
 
+Play with Swagger.
+
+To list all todos that are currently in the database:
+
+Select the option `GET /api/v1/todos/ Retrieve the complete list of tasks`
+
+Then opt for `Try it out` and `Execute`.
+
+You will see the used `curl` command (you can also try this in any terminal), and the response from the server.
+
+Try inserting some tasks and compare with output in the Astra cqlsh console. 
+
+Thanks for doing the exercises!
+
+## Bonus Exercise - Test with Todo MVC, client GUI and API specs ##
+
+To test with the Todo MVC client and spec tests, we need to make changes to the data model in order to support the test specs. The model has been simplified for this particular workshop.
+
+Check the instructions in this repository for the details re Todo MVC.
+
+https://github.com/DataStax-Academy/microservices-java-workshop-online
+
+
+
 
 
 

@@ -66,7 +66,7 @@ public class TodoListRestController {
      * Retrieve all tasks (GET)
      */
     @Operation(
-            summary = "Retrieve the complete list of Taskss",
+            summary = "Retrieve the complete list of Tasks",
             description = "List all records in the tables",
             tags = { "todos" })
     @ApiResponses(value = {
