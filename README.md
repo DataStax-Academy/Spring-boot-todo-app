@@ -356,26 +356,70 @@ KVUser@cqlsh:todoapp>
 
 Let's insert some test data:
 
-Locate the test CrudWithCassandraDriverIntegrationTest.java
+Locate the test CRUDWithAstraTest.java
 
 Again, this is in the test source folder.
 
 This one also implements the public interface for Task.
 
-To test:
+Inspect the test code where we insert the data:
+
+```java
+    @Test
+    public void test_Insert() {
+        /* 
+         * ==========================================
+         * Table Schema:
+         * ==========================================
+         * CREATE TABLE todoapp.todo_tasks (
+         *  uid uuid,
+         *  completed boolean,
+         *  offset int,
+         *  title text,
+         *  PRIMARY KEY (uid)
+         * );
+         * 
+         * ==========================================
+         * Sample INSERT:
+         * ==========================================
+         * INSERT into todo_tasks(uid, title, offset, completed)
+         * VALUES (uuid(), 'One', 1, true);
+         */
+        
+        // Using CqlSession and SimpleStatement insert this is table todo_tasks
+        UUID    sampleUID = UUID.randomUUID();
+        String  sampleTitle = "A TASK";
+        int     sampleOrder = 1;
+        boolean sampleComplete = true;
+        
+        // Create here your statement and execute it
+        //QueryBuilder.insertInto("todo_tasks").value(COL, value)
+        SimpleStatement stmt = SimpleStatement.builder(""
+                + "INSERT INTO todo_tasks (uid, title, offset, completed) "
+                + "VALUES (?,?,?,?)")
+                .addPositionalValue(sampleUID)
+                .addPositionalValue(sampleTitle)
+                .addPositionalValue(sampleOrder)
+                .addPositionalValue(sampleComplete).
+                build();
+        cqlSession.execute(stmt);
+        
+        System.out.println("Task created with UUID: " + sampleUID);
+```
+
+Make some changes to the task title, for example. 
+
+To test, change back into the project root and run this command.
 
 ```
-mvn test -Dtest=com.datastax.samples.astra.CrudWithCassandraDriverIntegrationTest#test_Insert
+mvn test -Dtest=com.datastax.examples.CRUDWithAstraTest#test_Insert
 ```
 
-Check in the Astra cql console to check if the data is there.
+Check in the Astra cql shell to check if the data is there.
 
 Success!
 
-Now we can move onto to implementing our rest controllers with Spring boot.
-
-Move on to the next step.
-
+Now we can move on to implementing our rest controllers with Spring boot.
 
 
 ## Exercise 3 - Rest Controllers ##
