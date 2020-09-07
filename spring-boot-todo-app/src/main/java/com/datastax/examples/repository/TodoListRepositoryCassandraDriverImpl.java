@@ -24,10 +24,7 @@ import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.truncate;
 import static com.datastax.oss.driver.api.querybuilder.relation.Relation.column;
 
-/**
- * Default in-memory implementation of the repository.
- * 
- * Help to have a working application even in the beginning.
+/*
  * 
  * @author Cedrick LUNVEN (@clunven)
  */

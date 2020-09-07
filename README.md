@@ -428,7 +428,7 @@ Success!
 Now we can move on to implementing our rest controllers with Spring boot.
 
 
-## Exercise 3 - Rest Controllers ##
+## Exercise 3 - Building the App ##
 
 Let's move away from the tests and have a look at our Spring application.
 
@@ -471,7 +471,7 @@ public interface TodoAppSchema {
 
 This is implemented in the class Task.java
 
-First we have the public interface `TodoListRepository.java`
+Then we need a public interface `TodoListRepository.java`
 
 This defines the API that we will expose:
 
@@ -502,9 +502,18 @@ This defines the API that we will expose:
     void deleteAll();
 ```
 
-The we have the Cassandra specific implementation of the interface, taking into account the public Task interface that we saw earlier in our tests.
+The class `TodoListRepositoryCassandraDriverImpl.java` is the Cassandra specific implementation of the interface, taking into account the public Task interface that we saw earlier in our tests.
 
 This is a big file, so won't copy it here. In a nutshell, it implements each of the interface functions so they can be executed via the driver.
+
+```java
+@Repository("todobackend.repo.cassandra-driver")
+public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository, TodoAppSchema {
+    
+    @Autowired
+    public CqlSession cqlSession;
+    ...
+```
 
 For example, here is the insert and update of a Task:
 
@@ -532,6 +541,16 @@ For example, here is the insert and update of a Task:
 ```
 
 And finally we have the RestController `TodoListRestController.java`, which implements the REST API.
+
+```java
+@RestController
+@RequestMapping("/api/v1/todos")
+public class TodoListRestController {
+    
+    @Autowired
+    @Qualifier("todobackend.repo.cassandra-driver")
+    ...
+```
 
 Here for example the creation of a new task:
 
@@ -576,11 +595,33 @@ Here for example the creation of a new task:
     }
 ```
 
+Note: some annotations, such as `@Tag`, `@Operation`, `@ApiResponse` are added to support Swagger (which in turn supports our tests).
+
 Now let's run the app:
 
 ```
 mvn spring-boot:run
 ```
+
+This is the expected output:
+
+```
+2020-09-07 13:42:33.856  INFO 1683 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-09-07 13:42:33.867  INFO 1683 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-09-07 13:42:33.867  INFO 1683 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
+2020-09-07 13:42:33.966  INFO 1683 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-09-07 13:42:33.966  INFO 1683 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1181 ms
+2020-09-07 13:42:34.928  INFO 1683 --- [           main] c.d.o.d.i.core.DefaultMavenCoordinates   : DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.6.1
+2020-09-07 13:42:35.425  INFO 1683 --- [     s0-admin-0] c.d.oss.driver.internal.core.time.Clock  : Using native clock for microsecond precision
+2020-09-07 13:42:35.691  INFO 1683 --- [        s0-io-0] c.d.oss.driver.api.core.uuid.Uuids       : PID obtained through native call to getpid(): 1683
+2020-09-07 13:42:36.570  INFO 1683 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-09-07 13:42:37.371  INFO 1683 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-09-07 13:42:37.388  INFO 1683 --- [           main] com.datastax.examples.Application        : Started Application in 5.37 seconds (JVM running for 5.917)
+```
+
+The API is now available on port 8080.
+
+Gitpod encourages you to open a browser:
 
 
 
