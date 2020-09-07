@@ -6,6 +6,10 @@ Create a database with keyspace `todoapp` on DataStax Astra.
 
 If this is your first time using Astra, sign up here:
 
+- [Registration Page](dtsx.io/workshop)
+
+You can use your `Github`, `Google` accounts or register with an `email`
+
 If you use these signup details, you won't need to make many changes when following along.
 
 ```
@@ -16,7 +20,7 @@ Password: KVPassword
 
 If you already have an Astra database, you can reuse it, but please create a new keyspace by name `todoapp`
 
-Once your database is created and ready to use, download the secure connect bundle and save it locally. We will need to upload this bundle in the next step. Keep it as a zip, there is no need to unzip the file.
+Once your database is created and ready to use, download the secure connect bundle from the main connection dialog page and save it locally. We will need to upload this bundle in the next step. Keep it as a zip, there is no need to unzip the file.
 
 To get coding, start gitpod. You will need to be signed in to Github:
 
