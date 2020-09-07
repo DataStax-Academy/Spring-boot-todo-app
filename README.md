@@ -43,7 +43,7 @@ Then select `File -> Upload Files...` from the header menu and upload the secure
 
 You should now see it in the `spring-boot-todo-app` folder
 
-```
+```bash
 gitpod /workspace/Spring-boot-todo-app/spring-boot-todo-app $ ls
 pom.xml  secure-connect-killrvideocluster.zip  src  target
 ```
@@ -56,7 +56,7 @@ mvn clean install -Dmaven.test.skip=true
 
 Your output should end like this:
 
-```
+```bash
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -77,7 +77,7 @@ You will find it in the following directory:
 
 Modify the following section with your own credentials.
 
-```{java}
+```java
     /** Settings. */
     /** Settings. */
     public static String ASTRA_ZIP_FILE = "/workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip";
@@ -88,7 +88,7 @@ Modify the following section with your own credentials.
 
 See here how we connect to Astra with the cqlSession:
 
-```
+```java
         // When connecting to ASTRA
         try (CqlSession cqlSession = CqlSession.builder()
                 .withCloudSecureConnectBundle(Paths.get(ASTRA_ZIP_FILE))
@@ -148,7 +148,7 @@ Locate the file: `ConnectivityToAstraWithConfTest.java` (in the same test source
 
 Check this line:
 
-```
+```java
         // Config loader from file
         DriverConfigLoader loader = DriverConfigLoader.fromFile(
                 new File(ConnectivityToAstraWithConfTest.class.getResource("/application_test.conf").getFile()));
@@ -198,7 +198,7 @@ See this entry in the `advanced` section:
     control-connection.timeout = 10 seconds
 ```
 
-Don't forget to save the `application_test.conf`, and then we can test the modified connection:
+Don't forget to save the `application_test.conf`, and then we can test the modified connection. Change back into the project root:
 
 ```
 cd /workspace/Spring-boot-todo-app/spring-boot-todo-app/
@@ -245,11 +245,17 @@ Locate the file `CreateSchemaInAstraTest.java` in the test source folder:
 
 Inspect the code:
 
-We are implementing a public interface of the name `TodoAppSchema`. This is located in the model folder of our main app, as we will be using it too later for the full app. 
+We are implementing a public interface of the name `TodoAppSchema`. This is located in the model folder of our main app, as we will be using it too later for the full app.
+
+You will find the the interface `TodoAppSchema.java` here:
+
+```
+/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/java/com/datastax/examples/model
+```
 
 It defines the task datamodel that we want to use, with its table name, column names and types:
 
-```
+```java
 public interface TodoAppSchema {
   
     /** Constants for table todo_tasks */
@@ -262,7 +268,7 @@ public interface TodoAppSchema {
 
 We are using the driver's schema builder to build this simple statement:
 
-```
+```java
             // Given a statement
             SimpleStatement stmtCreateTable = SchemaBuilder.createTable(TABLE_TODO_TASKS).ifNotExists()
                     .withPartitionKey(TASK_COL_UID, DataTypes.UUID)
@@ -274,7 +280,7 @@ We are using the driver's schema builder to build this simple statement:
 
 and then we execute this SimpleStatement with the cqlSession:
 
-```
+```java
             cqlSession.execute(stmtCreateTable);
 ```
 
