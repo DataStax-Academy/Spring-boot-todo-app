@@ -597,7 +597,48 @@ Here for example the creation of a new task:
 
 Note: some annotations, such as `@Tag`, `@Operation`, `@ApiResponse` are added to support Swagger (which in turn supports our tests).
 
-Now let's run the app:
+Before we can run the application, we need to update the `application.conf` in the resources folder for the main app to ensure that the driver has the correct configurations.
+
+Locate the file here:
+
+```
+/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/resources
+```
+
+Update with the location of your secure connect bundle, user name, password, etc. Don't forget to save.
+
+```
+datastax-java-driver {
+
+  basic {
+    request {
+      timeout     = 8 seconds
+      consistency = LOCAL_QUORUM
+      page-size = 5000
+    }
+    session-keyspace = todoapp
+    cloud {
+      secure-connect-bundle = /workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip
+    }
+  }
+
+  advanced {
+    auth-provider {
+      class = PlainTextAuthProvider
+      username = KVUser
+      password = KVPassword
+    }
+
+    connection {
+      init-query-timeout = 10 seconds
+      set-keyspace-timeout = 10 seconds
+    }
+    control-connection.timeout = 10 seconds
+  }
+
+```
+
+Now run the application:
 
 ```
 mvn spring-boot:run
@@ -623,6 +664,17 @@ The API is now available on port 8080.
 
 Gitpod encourages you to open a browser:
 
+Note the custom URL that gitpod generates for public access through port 8080, the port is appended at the beginning of the link:
+
+```
+https://8080-<your-uuid>.<your-region>.gitpod.io/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+```
+
+You should see the Swagger UI:
+
+Well done! 
+
+## Exercise 4 - Test the API with Swagger ##
 
 
 
