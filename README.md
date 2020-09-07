@@ -70,6 +70,7 @@ pom.xml  secure-connect-killrvideocluster.zip  src  target
 Next, install all dependencies, but exclude tests, as we have not implemented them yet:
 
 ```
+cd /workspace/Spring-boot-todo-app/spring-boot-todo-app
 mvn clean install -Dmaven.test.skip=true
 ```
 
