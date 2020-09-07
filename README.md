@@ -1,8 +1,10 @@
-## 🎓🔥 Build a Java Microservice with Astra and Spring 🔥🎓
+## 🎓🔥 Build a Spring Java Microservice with Apache Cassandra 🔥🎓
 
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app) 
 [![License Apache2](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Discord](https://img.shields.io/discord/685554030159593522)](https://discord.com/widget?id=685554030159593522&theme=dark)
+
+<img width="600" alt="Screenshot 2020-09-07 at 13 08 27" src="https://user-images.githubusercontent.com/20337262/92386378-9847d480-f10b-11ea-9782-d825f33a5182.png">
 
 ## Exercise 0 - Preparations ##
 
