@@ -6,7 +6,7 @@ Create a database with keyspace `todoapp` on DataStax Astra.
 
 If this is your first time using Astra, sign up here:
 
-- [Registration Page](dtsx.io/workshop)
+- [Registration Page](http://dtsx.io/workshop)
 
 You can use your `Github`, `Google` accounts or register with an `email`
 
