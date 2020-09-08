@@ -168,7 +168,7 @@ Now let's configure the driver with the configuration file for the next test:
 
 Locate the file: `ConnectivityToAstraWithConfTest.java` (in the same test source folder)
 
-Check this line:
+Check this section:
 
 ```java
         // Config loader from file
@@ -182,7 +182,7 @@ Check this line:
         }
 ```
 
-Here we are loading the config from a file named `application_test.con`
+Here we are loading the config from a file named `application_test.conf`
 And then we are passing this loaded configuration to the cqlSession.
 
 Locate the `application_test.conf` file in the following resources folder
