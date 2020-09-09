@@ -21,13 +21,13 @@
 
 ## Exercise 0 - Preparations ##
 
-**✅  Open gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
+**✅  Open Gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/tree/master/spring-boot-todo-app)
 
-Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. You will need to copy-paste `<your_uid>.<your_region>` as we will insert them in each URL during the exercises.
+Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. 
 
-Create a database with keyspace `todoapp` on DataStax Astra.
+**✅  Create the Astra database** Create a database with keyspace `todoapp` on DataStax Astra.
 
 If this is your first time using Astra, sign up here:
 
@@ -47,7 +47,11 @@ If you already have an Astra database, you can reuse it, but please create a new
 
 <img width="600" alt="Screenshot 2020-09-07 at 09 10 32" src="https://user-images.githubusercontent.com/20337262/92366057-902c6c80-f0ec-11ea-9903-897abc4a7ab8.png">
 
-Once your database is created and ready to use, copy the secure connect bundle link in the Connection Details link. Click on the copy icon next to `Download secure connect bundle`. This will save the link your clipboard.
+**✅  Download the secure connection bundle to Gitpod** 
+
+Once your database is created and ready to use, copy the secure connect bundle link in the Connection Details link. Click on the copy icon next to `Download secure connect bundle`. This will save the link your clipboard. 
+
+The link is only valid for a short time, so you will need to proceed to the next step quickly before it expires. Refreshing your browser will generate you a new valid link. 
 
 <img width="600" alt="Screenshot 2020-09-07 at 09 10 01" src="https://user-images.githubusercontent.com/20337262/92366367-f6b18a80-f0ec-11ea-8532-da8644b49cd7.png">
 
@@ -80,6 +84,8 @@ gitpod /workspace/Spring-boot-todo-app/spring-boot-todo-app $ ls
 creds.zip  pom.xml  src
 ```
 
+**✅  Install required dependencies**
+
 Next, install all dependencies, but exclude tests, as we have not implemented them yet:
 
 ```
@@ -97,6 +103,8 @@ Your output should end like this:
 [INFO] ------------------------------------------------------------------------
 ```
 
+Great, we are all set up now. Proceed to Exercise 1.
+
 [🏠 Back to Table of Contents](#table-of-contents)
 
 ## Exercise 1 - Test the connection to Astra ##
@@ -113,8 +121,7 @@ Modify the following section with your own credentials.
 
 ```java
     /** Settings. */
-    /** Settings. */
-    public static String ASTRA_ZIP_FILE = "/workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip";
+    public static String ASTRA_ZIP_FILE = "/workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip";
     public static String ASTRA_USERNAME = "KVUser";
     public static String ASTRA_PASSWORD = "KVPassword";
     public static String ASTRA_KEYSPACE = "todoapp";
@@ -140,7 +147,7 @@ Don't forget to save the file: There is no autosave with Gitpod.
 
 Let's run this test:
 
-First, change back into the project root:
+If you are not already there, change back into the project root:
 
 ```
 cd /workspace/Spring-boot-todo-app/spring-boot-todo-app/
@@ -185,7 +192,7 @@ Check this section:
 ```java
         // Config loader from file
         DriverConfigLoader loader = DriverConfigLoader.fromFile(
-                new File(ConnectivityToAstraWithConfTest.class.getResource("/application_test.conf").getFile()));
+                new File(ConnectivityToAstraWithConfTest.class.getResource("/application.conf").getFile()));
         
         // Use it to create the session
         try (CqlSession cqlSession = CqlSession.builder().withConfigLoader(loader).build()) {
@@ -194,27 +201,30 @@ Check this section:
         }
 ```
 
-Here we are loading the config from a file named `application_test.conf`
+Here we are loading the config from a file named `application.conf`
 And then we are passing this loaded configuration to the cqlSession.
 
-Locate the `application_test.conf` file in the following resources folder
+Locate the `application.conf` file in the following resources folder
 
 ```
-/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/test/resources
+/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/resources
 ```
 
-We now define our cluster connection settings in the file `application_test.conf`:
+We now define our cluster connection settings in the file `application.conf`:
 
 ```
+    # Here please enter your keyspace
     session-keyspace = todoapp
     cloud {
-      secure-connect-bundle = /workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip
+      # Path as defined in gitpod 
+      secure-connect-bundle = /workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip
     }
   }
 
   advanced {
     auth-provider {
       class = PlainTextAuthProvider
+      # Here please user and password
       username = KVUser
       password = KVPassword
     }
@@ -232,7 +242,7 @@ See this entry in the `advanced` section:
     control-connection.timeout = 10 seconds
 ```
 
-Don't forget to save the `application_test.conf`, and then we can test the modified connection. Change back into the project root:
+Don't forget to save the `application.conf`, and then we can test the modified connection. Change back into the project root if necessary:
 
 ```
 cd /workspace/Spring-boot-todo-app/spring-boot-todo-app/
