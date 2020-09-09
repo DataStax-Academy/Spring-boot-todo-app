@@ -24,7 +24,7 @@ public class ConnectivityToAstraExplicitTest {
     private static Logger LOGGER = LoggerFactory.getLogger(ConnectivityToAstraExplicitTest.class);
     
     /** Settings. */
-    public static String ASTRA_ZIP_FILE = "/workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip";
+    public static String ASTRA_ZIP_FILE = "/workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip";
     public static String ASTRA_USERNAME = "KVUser";
     public static String ASTRA_PASSWORD = "KVPassword";
     public static String ASTRA_KEYSPACE = "todoapp";

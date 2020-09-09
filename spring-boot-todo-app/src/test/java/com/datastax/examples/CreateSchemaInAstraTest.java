@@ -1,21 +1,22 @@
 package com.datastax.examples;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
-import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import com.datastax.oss.driver.api.core.type.DataTypes;
-import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
-import com.datastax.examples.model.TodoAppSchema;
+import java.io.File;
+
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.datastax.examples.todo.TodoListRepository;
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.core.type.DataTypes;
+import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
 
 @RunWith(JUnitPlatform.class)
-public class CreateSchemaInAstraTest implements TodoAppSchema {
+public class CreateSchemaInAstraTest {
 
     /** Logger for the class. */
     private static Logger LOGGER = LoggerFactory.getLogger(CreateSchemaInAstraTest.class);
@@ -25,7 +26,7 @@ public class CreateSchemaInAstraTest implements TodoAppSchema {
         
         // Config loader from file
         DriverConfigLoader loader = DriverConfigLoader.fromFile(
-                new File(CreateSchemaInAstraTest.class.getResource("/application_test.conf").getFile()));
+                new File(CreateSchemaInAstraTest.class.getResource("/application.conf").getFile()));
         
         // Use it to create the session
         try (CqlSession cqlSession = CqlSession.builder().withConfigLoader(loader).build()) {
@@ -34,18 +35,19 @@ public class CreateSchemaInAstraTest implements TodoAppSchema {
                     cqlSession.getKeyspace().get());
             
             // Given a statement
-            SimpleStatement stmtCreateTable = SchemaBuilder.createTable(TABLE_TODO_TASKS).ifNotExists()
-                    .withPartitionKey(TASK_COL_UID, DataTypes.UUID)
-                    .withColumn(TASK_COL_TITLE, DataTypes.TEXT)
-                    .withColumn(TASK_COL_COMPLETED, DataTypes.BOOLEAN)
-                    .withColumn(TASK_COL_OFFSET, DataTypes.INT)
+            
+            SimpleStatement stmtCreateTable = SchemaBuilder.createTable(TodoListRepository.TABLE_TODO_TASKS).ifNotExists()
+                    .withPartitionKey(TodoListRepository.TASK_COL_UID, DataTypes.UUID)
+                    .withColumn(TodoListRepository.TASK_COL_TITLE, DataTypes.TEXT)
+                    .withColumn(TodoListRepository.TASK_COL_COMPLETED, DataTypes.BOOLEAN)
+                    .withColumn(TodoListRepository.TASK_COL_OFFSET, DataTypes.INT)
                     .build();
             
             // When creating the table
             cqlSession.execute(stmtCreateTable);
             
             // Then table is created
-            LOGGER.info("Table '{}' has been created (if needed).", TABLE_TODO_TASKS);
+            LOGGER.info("Table '{}' has been created (if needed).", TodoListRepository.TABLE_TODO_TASKS);
         }
     }
 }

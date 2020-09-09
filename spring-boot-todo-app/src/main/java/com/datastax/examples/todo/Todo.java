@@ -1,4 +1,4 @@
-package com.datastax.examples.model;
+package com.datastax.examples.todo;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -8,7 +8,7 @@ import java.util.UUID;
  *
  * @author Cedrick LUNVEN (@clunven)
  */
-public class Task implements Serializable, Comparable<Task> {
+public class Todo implements Serializable, Comparable<Todo> {
 
     /** Serial. */
     private static final long serialVersionUID = -7930662827102682933L;
@@ -28,19 +28,19 @@ public class Task implements Serializable, Comparable<Task> {
     /**
      * Constructors.
      */
-    public Task() {}
+    public Todo() {}
     
     /**
      * Constructor helping for tests
      */
-    public Task(String title) {
+    public Todo(String title) {
         this(UUID.randomUUID(), title, false, -1);
     }
 
     /**
      * Full constructor.
      */
-    public Task(UUID uuid, String title, boolean completed, int order) {
+    public Todo(UUID uuid, String title, boolean completed, int order) {
         super();
         this.uuid = uuid;
         this.title = title;
@@ -50,7 +50,7 @@ public class Task implements Serializable, Comparable<Task> {
 
     /** {@inheritDoc} */
     @Override
-    public int compareTo(Task other) {
+    public int compareTo(Todo other) {
         if (other == null) return 1;
         return order - other.getOrder();
     }

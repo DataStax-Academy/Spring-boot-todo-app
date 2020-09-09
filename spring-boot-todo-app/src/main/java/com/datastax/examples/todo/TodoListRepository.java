@@ -1,6 +1,4 @@
-package com.datastax.examples.repository;
-
-import com.datastax.examples.model.Task;
+package com.datastax.examples.todo;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,15 +12,22 @@ import java.util.UUID;
  */
 public interface TodoListRepository {
     
+    /** Constants for table todo_tasks to be used in statements */
+    String TABLE_TODO_TASKS     = "todo_tasks";
+    String TASK_COL_UID         = "uid";
+    String TASK_COL_TITLE       = "title";
+    String TASK_COL_COMPLETED   = "completed";
+    String TASK_COL_OFFSET      = "offset";
+    
     /**
      * Find a task from its unique identifier.
      */
-    Optional<Task> findById(UUID uid);
+    Optional<Todo> findById(UUID uid);
 
     /**
-     * Create a new {@link Task} providing only a title.
+     * Create a new {@link Todo} providing only a title.
      */
-    void upsert(Task title);
+    void upsert(Todo title);
     
     /**
      * Delete a task identifier
@@ -32,7 +37,7 @@ public interface TodoListRepository {
     /**
      * List all available tasks.
      */
-    List < Task > findAll();
+    List < Todo > findAll();
     
     /**
      * Clean all records.

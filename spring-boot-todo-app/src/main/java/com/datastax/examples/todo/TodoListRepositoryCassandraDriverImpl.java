@@ -1,22 +1,4 @@
-package com.datastax.examples.repository;
-
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.cql.PreparedStatement;
-import com.datastax.oss.driver.api.core.cql.ResultSet;
-import com.datastax.oss.driver.api.core.cql.Row;
-import com.datastax.oss.driver.api.core.cql.SimpleStatement;
-import com.datastax.examples.model.Task;
-import com.datastax.examples.model.TodoAppSchema;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
-
-import javax.annotation.PostConstruct;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+package com.datastax.examples.todo;
 
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.bindMarker;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.deleteFrom;
@@ -24,12 +6,32 @@ import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.selectFrom;
 import static com.datastax.oss.driver.api.querybuilder.QueryBuilder.truncate;
 import static com.datastax.oss.driver.api.querybuilder.relation.Relation.column;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.cql.PreparedStatement;
+import com.datastax.oss.driver.api.core.cql.ResultSet;
+import com.datastax.oss.driver.api.core.cql.Row;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+import com.datastax.oss.driver.api.core.type.DataTypes;
+import com.datastax.oss.driver.api.querybuilder.SchemaBuilder;
+
 /*
  * 
  * @author Cedrick LUNVEN (@clunven)
  */
 @Repository("todobackend.repo.cassandra-driver")
-public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository, TodoAppSchema {
+public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository {
     
     @Autowired
     public CqlSession cqlSession;
@@ -55,7 +57,7 @@ public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository
     
     /** {@inheritDoc} */
     @Override
-    public void upsert(Task dto) {
+    public void upsert(Todo dto) {
         Assert.notNull(dto, "Task should not be null");
         Assert.notNull(dto.getUuid(), "Task 'uid' should not be null");
         /* 
@@ -77,8 +79,8 @@ public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository
     
     /** {@inheritDoc} */
     @Override
-    public List<Task> findAll() {
-        List<Task> targetList = cqlSession.execute(psFindAll.bind())
+    public List<Todo> findAll() {
+        List<Todo> targetList = cqlSession.execute(psFindAll.bind())
                                           .all().stream()
                                           .map(this::mapTaskRecord)
                                           .collect(Collectors.toList());
@@ -94,7 +96,7 @@ public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository
 
     /** {@inheritDoc} */
     @Override
-    public Optional<Task> findById(UUID uid) {
+    public Optional<Todo> findById(UUID uid) {
         Assert.notNull(uid, "Task uid should not be null nor empty");
         ResultSet rs = cqlSession.execute(psFindTask.bind(uid));
         Row taskrecord = rs.one(); // Request with primary key = unicity
@@ -114,6 +116,16 @@ public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository
      */
     @PostConstruct
     public void initStatements() {
+        // Create table if not exist
+        cqlSession.execute(SchemaBuilder
+                .createTable(TodoListRepository.TABLE_TODO_TASKS)
+                .ifNotExists()
+                .withPartitionKey(TodoListRepository.TASK_COL_UID, DataTypes.UUID)
+                .withColumn(TodoListRepository.TASK_COL_TITLE, DataTypes.TEXT)
+                .withColumn(TodoListRepository.TASK_COL_COMPLETED, DataTypes.BOOLEAN)
+                .withColumn(TodoListRepository.TASK_COL_OFFSET, DataTypes.INT)
+                .build());
+        
         if (psFindTask == null) {
             // SELECT * FROM todo_tasks where uid= d1d19715-a397-4975-bcb3-5107712db387;
             psFindTask = cqlSession.prepare(
@@ -141,8 +153,8 @@ public class TodoListRepositoryCassandraDriverImpl implements TodoListRepository
     /**
      * Mapping from Cassandra Record to Object
      */
-    private Task mapTaskRecord(Row taskRecord) {
-        Task task = new Task();
+    private Todo mapTaskRecord(Row taskRecord) {
+        Todo task = new Todo();
         task.setUuid(taskRecord.getUuid(TASK_COL_UID));
         task.setTitle(taskRecord.getString(TASK_COL_TITLE));
         task.setCompleted(taskRecord.getBoolean(TASK_COL_COMPLETED));

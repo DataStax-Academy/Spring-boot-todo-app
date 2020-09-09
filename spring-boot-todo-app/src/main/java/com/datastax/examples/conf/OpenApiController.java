@@ -1,4 +1,4 @@
-package com.datastax.examples.resources;
+package com.datastax.examples.conf;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
  * Home = API documentation page
  */
 @Controller
-public class HomeController {
+public class OpenApiController {
 
     @Value(SWAGGER_UI_PATH)
     private String swaggerUiPath;

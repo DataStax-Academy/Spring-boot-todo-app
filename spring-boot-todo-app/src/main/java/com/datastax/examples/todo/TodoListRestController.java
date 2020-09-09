@@ -1,8 +1,7 @@
-package com.datastax.examples.resources;
+package com.datastax.examples.todo;
 
 import com.datastax.oss.driver.api.core.DriverException;
-import com.datastax.examples.model.Task;
-import com.datastax.examples.repository.TodoListRepository;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -72,12 +71,12 @@ public class TodoListRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                          description = "The list has been retrieved even if empty no error",
-                         content = @Content(array = @ArraySchema(schema = @Schema(implementation = Task.class)))) })
+                         content = @Content(array = @ArraySchema(schema = @Schema(implementation = Todo.class)))) })
     @RequestMapping(
             value = "/",
             method = GET,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Task>> findAll(HttpServletRequest request) {
+    public ResponseEntity<List<Todo>> findAll(HttpServletRequest request) {
         logger.info("List all task in the db: {}", rewriteUrl(request) + "?" + request.getQueryString());
         return ResponseEntity.ok(todoRepository.findAll()
                 .stream().collect(Collectors.toList()));
@@ -110,7 +109,7 @@ public class TodoListRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                             description = "The task has been successfully created",
-                            content = @Content(schema = @Schema(implementation = Task.class))),
+                            content = @Content(schema = @Schema(implementation = Todo.class))),
             @ApiResponse(responseCode = "400", description = "Title is blank but is mandatory"),
             @ApiResponse(responseCode = "500", description = "An error occur in storage") })
     @RequestMapping(
@@ -118,19 +117,19 @@ public class TodoListRestController {
             method = POST,
             produces = APPLICATION_JSON_VALUE,
             consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Task> create(HttpServletRequest request,
+    public ResponseEntity<Todo> create(HttpServletRequest request,
             @RequestBody
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Only field <b>title</b> is required in the following JSON object", 
                     required = true, 
-                    content = @Content(schema = @Schema(implementation = Task.class)))
-            Task taskCreationRequest)
+                    content = @Content(schema = @Schema(implementation = Todo.class)))
+            Todo taskCreationRequest)
     throws URISyntaxException {
         Assert.notNull(taskCreationRequest, "You must provide a Task in BODY");
         Assert.hasLength(taskCreationRequest.getTitle(), "Title is a required field to create a task");
         logger.info("Create new Task at {} with title {}",
                 request.getRequestURL().toString(), taskCreationRequest.getTitle());
-        Task dto = new Task(UUID.randomUUID(),
+        Todo dto = new Todo(UUID.randomUUID(),
                 taskCreationRequest.getTitle(),
                 taskCreationRequest.isCompleted(),
                 taskCreationRequest.getOrder());
@@ -152,10 +151,10 @@ public class TodoListRestController {
             tags = { "Task" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(schema = @Schema(implementation = Task.class))),
+                    content = @Content(schema = @Schema(implementation = Todo.class))),
             @ApiResponse(responseCode = "400", description = "UUID is blank or contains invalid characters (expecting valid UUID)"),
             @ApiResponse(responseCode = "404", description = "Task not found") })
-    public ResponseEntity<Task> read(HttpServletRequest request,
+    public ResponseEntity<Todo> read(HttpServletRequest request,
             @Parameter(name="taskId",
                      description="Unique identifier for the task",
                      example = "6f6c5b47-4e23-4437-ada8-d0a6f79330a2",
@@ -163,7 +162,7 @@ public class TodoListRestController {
             @PathVariable(value = "taskId") String taskId) {
         logger.info("Find a task with its id {}", rewriteUrl(request) + "?" + request.getQueryString());
         Assert.hasLength(taskId, "TaskId id is required and should not be null");
-        Optional<Task> myTask = todoRepository.findById(UUID.fromString(taskId));
+        Optional<Todo> myTask = todoRepository.findById(UUID.fromString(taskId));
         // Routing Result
         if (!myTask.isPresent()) {
             logger.warn("Task with uid {} has not been found", taskId);
@@ -181,7 +180,7 @@ public class TodoListRestController {
             tags = { "update" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(schema = @Schema(implementation = Task.class))),
+                    content = @Content(schema = @Schema(implementation = Todo.class))),
             @ApiResponse(responseCode = "400", description = "Json body not valid"),
             @ApiResponse(responseCode = "404", description = "Task UUID not found") })
     @RequestMapping(
@@ -189,7 +188,7 @@ public class TodoListRestController {
             method = PATCH,
             produces = APPLICATION_JSON_VALUE,
             consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Task> update(HttpServletRequest request,
+    public ResponseEntity<Todo> update(HttpServletRequest request,
             @Parameter(name="taskId", required=true,
             description="Unique identifier for the task",
             example = "6f6c5b47-4e23-4437-ada8-d0a6f79330a2")
@@ -198,18 +197,18 @@ public class TodoListRestController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Update all fields if needed",
                     required = true,
-                    content = @Content(schema = @Schema(implementation = Task.class)))
-            Task task)
+                    content = @Content(schema = @Schema(implementation = Todo.class)))
+            Todo task)
     throws URISyntaxException {
         Assert.notNull(task, "You must provide a Task in BODY");
         logger.info("Updating task {}", taskId);
-        Optional<Task> myTask = todoRepository.findById(UUID.fromString(taskId));
+        Optional<Todo> myTask = todoRepository.findById(UUID.fromString(taskId));
         // Routing Result
         if (!myTask.isPresent()) {
             logger.warn("Task with uid {} has not been found", taskId);
             return ResponseEntity.notFound().build();
         }
-        Task existing = myTask.get();
+        Todo existing = myTask.get();
         String newTitle =  task.getTitle();
         if (null != newTitle && !"".equals(newTitle)) {
             existing.setTitle(newTitle);
@@ -233,7 +232,7 @@ public class TodoListRestController {
             @PathVariable(value = "taskId") String taskId) {
         logger.info("Delete a task with its id {}", request.getRequestURL().toString());
         Assert.hasLength(taskId, "TaskId id is required and should not be null");
-        Optional<Task> myTask = todoRepository.findById(UUID.fromString(taskId));
+        Optional<Todo> myTask = todoRepository.findById(UUID.fromString(taskId));
         // Routing Result
         if (!myTask.isPresent()) {
             logger.warn("Task with uid {} has not been found", taskId);

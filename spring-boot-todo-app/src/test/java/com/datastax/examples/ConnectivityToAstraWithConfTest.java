@@ -28,7 +28,7 @@ public class ConnectivityToAstraWithConfTest {
 
         // Config loader from file
         DriverConfigLoader loader = DriverConfigLoader.fromFile(
-                new File(ConnectivityToAstraWithConfTest.class.getResource("/application_test.conf").getFile()));
+                new File(ConnectivityToAstraWithConfTest.class.getResource("/application.conf").getFile()));
         
         // Use it to create the session
         try (CqlSession cqlSession = CqlSession.builder().withConfigLoader(loader).build()) {
