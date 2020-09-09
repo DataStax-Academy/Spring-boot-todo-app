@@ -21,6 +21,12 @@
 
 ## Exercise 0 - Preparations ##
 
+**✅  Open gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/tree/master/spring-boot-todo-app)
+
+Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. You will need to copy-paste `<your_uid>.<your_region>` as we will insert them in each URL during the exercises.
+
 Create a database with keyspace `todoapp` on DataStax Astra.
 
 If this is your first time using Astra, sign up here:
@@ -41,36 +47,42 @@ If you already have an Astra database, you can reuse it, but please create a new
 
 <img width="600" alt="Screenshot 2020-09-07 at 09 10 32" src="https://user-images.githubusercontent.com/20337262/92366057-902c6c80-f0ec-11ea-9903-897abc4a7ab8.png">
 
-Once your database is created and ready to use, download the secure connect bundle from the main connection dialog page and save it locally. We will need to upload this bundle in the next step. Keep it as a zip, there is no need to unzip the file.
+Once your database is created and ready to use, copy the secure connect bundle link in the Connection Details link. Click on the copy icon next to `Download secure connect bundle`. This will save the link your clipboard.
 
 <img width="600" alt="Screenshot 2020-09-07 at 09 10 01" src="https://user-images.githubusercontent.com/20337262/92366367-f6b18a80-f0ec-11ea-8532-da8644b49cd7.png">
 
-To get coding, start gitpod. You will need to be signed in to Github:
+We will use the copied link to download the bundle to gitpod via curl. Insert your copied link here:
 
-**✅  Open gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
+```
+curl -L "<insert link here>" > /workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip
+```
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/tree/master/spring-boot-todo-app)
-
-Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. You will need to copy-paste `<your_uid>.<your_region>` as we will insert them in each URL during the exercises.
-
-
-First step: Upload your Astra secure bundle.
-
-To upload a file to gitpod, you need to select a folder in the left hand explorer panel first. Select the folder `spring-boot-todo-app`.
-
-Then select `File -> Upload Files...` from the header menu and upload the secure bundle that you saved earlier.
-
-You should now see it in the `spring-boot-todo-app` folder
+Expected output:
 
 ```bash
+gitpod /workspace/Spring-boot-todo-app $ curl -L "https://datastax-cluster-config-prod.s3.us-east-2.amazonaws.com/..." > /workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 12372  100 12372    0     0  18975      0 --:--:-- --:--:-- --:--:-- 18975
+```
+
+Change into the project root and verify that you have successfully downloaded the credentials:
+
+```
+cd spring-boot-todo-app/
+ls
+```
+
+Expected output:
+
+```
+gitpod /workspace/Spring-boot-todo-app $ cd spring-boot-todo-app/
 gitpod /workspace/Spring-boot-todo-app/spring-boot-todo-app $ ls
-pom.xml  secure-connect-killrvideocluster.zip  src  target
+creds.zip  pom.xml  src
 ```
 
 Next, install all dependencies, but exclude tests, as we have not implemented them yet:
 
 ```
-cd /workspace/Spring-boot-todo-app/spring-boot-todo-app
 mvn clean install -Dmaven.test.skip=true
 ```
 
