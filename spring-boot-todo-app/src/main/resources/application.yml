@@ -15,4 +15,4 @@ springdoc:
   show-actuator: true
   group-configs:
     - group: Rest Controllers (Spring MVC)
-      packages-to-scan: com.datastax.examples.resources
+      packages-to-scan: com.datastax.examples.todo

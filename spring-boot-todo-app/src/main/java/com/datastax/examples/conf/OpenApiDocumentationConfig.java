@@ -16,9 +16,12 @@ public class OpenApiDocumentationConfig {
     @Bean
     public OpenAPI openApiSpec(@Value("1.3.9") String appVersion) {
         String des = "Implementation of TodoBackend application with Spring WebMVC and storage in Apache Cassandra";
-        Info info  = new Info().title("Developer Workshop :: Build a Spring Java Microservice with Apache Cassandra")
-                .version(appVersion).description(des)
+        Info info  = new Info()
+                .title("Developer Workshop :: Build a Spring Java Microservice with Apache Cassandra")
+                .version(appVersion)
+                .description(des)
                 .termsOfService("http://swagger.io/terms/")
+                
                 .license(new License().name("Apache 2.0")
                         .url("http://springdoc.org"));
         return new OpenAPI().addServersItem(new Server().url("/")).info(info);
