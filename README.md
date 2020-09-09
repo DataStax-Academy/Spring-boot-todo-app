@@ -625,17 +625,20 @@ mvn spring-boot:run
 This is the expected output:
 
 ```
-2020-09-07 13:42:33.856  INFO 1683 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2020-09-07 13:42:33.867  INFO 1683 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2020-09-07 13:42:33.867  INFO 1683 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.35]
-2020-09-07 13:42:33.966  INFO 1683 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2020-09-07 13:42:33.966  INFO 1683 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1181 ms
-2020-09-07 13:42:34.928  INFO 1683 --- [           main] c.d.o.d.i.core.DefaultMavenCoordinates   : DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.6.1
-2020-09-07 13:42:35.425  INFO 1683 --- [     s0-admin-0] c.d.oss.driver.internal.core.time.Clock  : Using native clock for microsecond precision
-2020-09-07 13:42:35.691  INFO 1683 --- [        s0-io-0] c.d.oss.driver.api.core.uuid.Uuids       : PID obtained through native call to getpid(): 1683
-2020-09-07 13:42:36.570  INFO 1683 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2020-09-07 13:42:37.371  INFO 1683 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2020-09-07 13:42:37.388  INFO 1683 --- [           main] com.datastax.examples.Application        : Started Application in 5.37 seconds (JVM running for 5.917)
+[INFO] Attaching agents: []
+Picked up JAVA_TOOL_OPTIONS: -Xmx2254m
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.3.0.RELEASE)
+
+11:47:59.792 INFO  com.datastax.examples.Application             : Starting Application on ws-a9aeb9ce-763d-4a96-949c-ab7b29781a45 with PID 2238 (/workspace/Spring-boot-todo-app/spring-boot-todo-app/target/classes started by gitpod in /workspace/Spring-boot-todo-app/spring-boot-todo-app)
+11:47:59.797 INFO  com.datastax.examples.Application             : No active profile set, falling back to default profiles: default
+11:48:04.280 INFO  com.datastax.examples.Application             : Started Application in 4.955 seconds (JVM running for 5.616)
 ```
 
 The API is now available on port 8080.
