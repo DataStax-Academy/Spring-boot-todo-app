@@ -460,8 +460,6 @@ Now we can move on to implementing our rest controllers with Spring boot.
 
 Let's move away from the tests and have a look at our Spring application.
 
-For the minimal architecture, we need the model, a repository, a controller and the driver configuration.
-
 Let's start with the driver configuration. The bean is defined and configured in the CassandraDriverConfig.java class:
 
 ```java
@@ -482,10 +480,10 @@ public class CassandraDriverConfig {
 By default, the driver will take the application.conf from the resources folder to configure this connection.
 
 
-As before, we are using the following Task model:
+As before, we are using the following model for the `todo_tasks`:
 
 ```java
-public interface TodoAppSchema {
+public interface TodoListRepository {
   
     /** Constants for table todo_tasks */
     String TABLE_TODO_TASKS     = "todo_tasks";
@@ -497,22 +495,18 @@ public interface TodoAppSchema {
 }
 ```
 
-This is implemented in the class Task.java
-
-Then we need a public interface `TodoListRepository.java`
-
-This defines the API that we will expose:
+The public interface `TodoListRepository.java` also defines the API that we will expose:
 
 ```
     /**
      * Find a task from its unique identifier.
      */
-    Optional<Task> findById(UUID uid);
+    Optional<Todo> findById(UUID uid);
 
     /**
-     * Create a new {@link Task} providing only a title.
+     * Create a new {@link Todo} providing only a title.
      */
-    void upsert(Task title);
+    void upsert(Todo title);
     
     /**
      * Delete a task identifier
@@ -522,7 +516,7 @@ This defines the API that we will expose:
     /**
      * List all available tasks.
      */
-    List < Task > findAll();
+    List < Todo > findAll();
     
     /**
      * Clean all records.
@@ -530,7 +524,7 @@ This defines the API that we will expose:
     void deleteAll();
 ```
 
-The class `TodoListRepositoryCassandraDriverImpl.java` is the Cassandra specific implementation of the interface, taking into account the public Task interface that we saw earlier in our tests.
+The class `TodoListRepositoryCassandraDriverImpl.java` is the Cassandra specific implementation of the interface.
 
 This is a big file, so won't copy it here. In a nutshell, it implements each of the interface functions so they can be executed via the driver.
 
@@ -547,7 +541,7 @@ For example, here is the insert and update of a Task:
 
 ```java
     @Override
-    public void upsert(Task dto) {
+    public void upsert(Todo dto) {
         Assert.notNull(dto, "Task should not be null");
         Assert.notNull(dto.getUuid(), "Task 'uid' should not be null");
         /* 
@@ -565,7 +559,6 @@ For example, here is the insert and update of a Task:
                 .addPositionalValue(dto.isCompleted())
                 .build();
         cqlSession.execute(stmtInsertTask);
-    }
 ```
 
 And finally we have the RestController `TodoListRestController.java`, which implements the REST API.
@@ -593,7 +586,7 @@ Here for example the creation of a new task:
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                             description = "The task has been successfully created",
-                            content = @Content(schema = @Schema(implementation = Task.class))),
+                            content = @Content(schema = @Schema(implementation = Todo.class))),
             @ApiResponse(responseCode = "400", description = "Title is blank but is mandatory"),
             @ApiResponse(responseCode = "500", description = "An error occur in storage") })
     @RequestMapping(
@@ -601,19 +594,19 @@ Here for example the creation of a new task:
             method = POST,
             produces = APPLICATION_JSON_VALUE,
             consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Task> create(HttpServletRequest request,
+    public ResponseEntity<Todo> create(HttpServletRequest request,
             @RequestBody
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Only field <b>title</b> is required in the following JSON object", 
                     required = true, 
-                    content = @Content(schema = @Schema(implementation = Task.class)))
-            Task taskCreationRequest)
+                    content = @Content(schema = @Schema(implementation = Todo.class)))
+            Todo taskCreationRequest)
     throws URISyntaxException {
         Assert.notNull(taskCreationRequest, "You must provide a Task in BODY");
         Assert.hasLength(taskCreationRequest.getTitle(), "Title is a required field to create a task");
         logger.info("Create new Task at {} with title {}",
                 request.getRequestURL().toString(), taskCreationRequest.getTitle());
-        Task dto = new Task(UUID.randomUUID(),
+        Todo dto = new Todo(UUID.randomUUID(),
                 taskCreationRequest.getTitle(),
                 taskCreationRequest.isCompleted(),
                 taskCreationRequest.getOrder());
@@ -621,49 +614,6 @@ Here for example the creation of a new task:
         // Created
         return ResponseEntity.ok(dto);
     }
-```
-
-Note: some annotations, such as `@Tag`, `@Operation`, `@ApiResponse` are added to support Swagger (which in turn supports our tests).
-
-Before we can run the application, we need to update the `application.conf` in the resources folder for the main app to ensure that the driver has the correct configurations.
-
-Locate the file here:
-
-```
-/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/resources
-```
-
-Update with the location of your secure connect bundle, user name, password, etc. Don't forget to save.
-
-```
-datastax-java-driver {
-
-  basic {
-    request {
-      timeout     = 8 seconds
-      consistency = LOCAL_QUORUM
-      page-size = 5000
-    }
-    session-keyspace = todoapp
-    cloud {
-      secure-connect-bundle = /workspace/Spring-boot-todo-app/spring-boot-todo-app/secure-connect-killrvideocluster.zip
-    }
-  }
-
-  advanced {
-    auth-provider {
-      class = PlainTextAuthProvider
-      username = KVUser
-      password = KVPassword
-    }
-
-    connection {
-      init-query-timeout = 10 seconds
-      set-keyspace-timeout = 10 seconds
-    }
-    control-connection.timeout = 10 seconds
-  }
-
 ```
 
 Now run the application:
