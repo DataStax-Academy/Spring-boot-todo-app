@@ -292,43 +292,32 @@ Locate the file `CreateSchemaInAstraTest.java` in the test source folder:
 
 Inspect the code:
 
-We are implementing a public interface of the name `TodoAppSchema`. This is located in the model folder of our main app, as we will be using it too later for the full app.
 
-You will find the the interface `TodoAppSchema.java` here:
-
-```
-/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/java/com/datastax/examples/model
-```
-
-It defines the task datamodel that we want to use, with its table name, column names and types:
+We are using the driver's schema builder to build this simple statement to create the required table:
 
 ```java
-public interface TodoAppSchema {
-  
-    /** Constants for table todo_tasks */
+            SimpleStatement stmtCreateTable = SchemaBuilder.createTable(TodoListRepository.TABLE_TODO_TASKS).ifNotExists()
+                    .withPartitionKey(TodoListRepository.TASK_COL_UID, DataTypes.UUID)
+                    .withColumn(TodoListRepository.TASK_COL_TITLE, DataTypes.TEXT)
+                    .withColumn(TodoListRepository.TASK_COL_COMPLETED, DataTypes.BOOLEAN)
+                    .withColumn(TodoListRepository.TASK_COL_OFFSET, DataTypes.INT)
+                    .build();
+            
+            // When creating the table
+            cqlSession.execute(stmtCreateTable);
+```
+
+The table is defined in this public repository (located in `/workspace/Spring-boot-todo-app/spring-boot-todo-app/src/main/java/com/datastax/examples/todo/TodoListRepository.java`)
+
+```
+public interface TodoListRepository {
+    
+    /** Constants for table todo_tasks to be used in statements */
     String TABLE_TODO_TASKS     = "todo_tasks";
     String TASK_COL_UID         = "uid";
     String TASK_COL_TITLE       = "title";
     String TASK_COL_COMPLETED   = "completed";
     String TASK_COL_OFFSET      = "offset";
-```
-
-We are using the driver's schema builder to build this simple statement:
-
-```java
-            // Given a statement
-            SimpleStatement stmtCreateTable = SchemaBuilder.createTable(TABLE_TODO_TASKS).ifNotExists()
-                    .withPartitionKey(TASK_COL_UID, DataTypes.UUID)
-                    .withColumn(TASK_COL_TITLE, DataTypes.TEXT)
-                    .withColumn(TASK_COL_COMPLETED, DataTypes.BOOLEAN)
-                    .withColumn(TASK_COL_OFFSET, DataTypes.INT)
-                    .build();
-```
-
-and then we execute this SimpleStatement with the cqlSession:
-
-```java
-            cqlSession.execute(stmtCreateTable);
 ```
 
 Let's run this test. This will create the schema in our database.
@@ -403,11 +392,7 @@ KVUser@cqlsh:todoapp>
 
 Let's insert some test data:
 
-Locate the test CRUDWithAstraTest.java
-
-Again, this is in the test source folder.
-
-This one also implements the public interface for Task.
+Locate the test CRUDWithAstraTest.java in the test source folder.
 
 Inspect the test code where we insert the data:
 
@@ -456,7 +441,7 @@ Inspect the test code where we insert the data:
 
 Make some changes to the task title, for example. 
 
-To test, change back into the project root and run this command.
+To test, run this command.
 
 ```
 mvn test -Dtest=com.datastax.examples.CRUDWithAstraTest#test_Insert
