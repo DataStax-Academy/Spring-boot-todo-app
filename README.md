@@ -23,7 +23,7 @@
 
 **✅  Open Gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/tree/master/spring-boot-todo-app)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/)
 
 Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. 
 
@@ -58,27 +58,32 @@ The link is only valid for a short time, so you will need to proceed to the next
 We will use the copied link to download the bundle to gitpod via curl. Insert your copied link here:
 
 ```
-curl -L "<insert link here>" > /workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip
+curl -L "<insert link here>" > creds.zip
 ```
 
 Expected output:
 
 ```bash
-gitpod /workspace/Spring-boot-todo-app $ curl -L "https://datastax-cluster-config-prod.s3.us-east-2.amazonaws.com/..." > /workspace/Spring-boot-todo-app/spring-boot-todo-app/creds.zip  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+gitpod /workspace/Spring-boot-todo-app $ curl -L "https://datastax-cluster-config-prod.s3.us-east-2.amazonaws.com/..." > creds.zip  
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100 12372  100 12372    0     0  18975      0 --:--:-- --:--:-- --:--:-- 18975
+100 12375  100 12375    0     0  21010      0 --:--:-- --:--:-- --:--:-- 21010
 ```
 
-Change into the project root and verify that you have successfully downloaded the credentials:
+Verify that you have successfully downloaded the credentials and move them into the project root:
 
 ```
-cd spring-boot-todo-app/
 ls
+mv creds.zip spring-boot-todo-app
+cd spring-boot-todo-app/
 ```
 
 Expected output:
 
 ```
+gitpod /workspace/Spring-boot-todo-app $ ls
+creds.zip  LICENSE  README.md  slides  spring-boot-todo-app
+gitpod /workspace/Spring-boot-todo-app $ mv creds.zip spring-boot-todo-app
 gitpod /workspace/Spring-boot-todo-app $ cd spring-boot-todo-app/
 gitpod /workspace/Spring-boot-todo-app/spring-boot-todo-app $ ls
 creds.zip  pom.xml  src
