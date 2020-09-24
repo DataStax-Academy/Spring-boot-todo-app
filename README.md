@@ -23,7 +23,7 @@
 
 **✅  Open Gitpod** : [Gitpod](http://www.gitpod.io/?utm_source=datastax&utm_medium=referral&utm_campaign=datastaxworkshops) is an IDE 100% online based on Eclipse Theia. To initialize your environment simply click on the button below *(CTRL + Click to open in new tab)*
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/DataStax-Academy/Spring-boot-todo-app/)
 
 Target url looks like  `https://<your_uid>.<your_region>.gitpod.io/#/#/workspace/Spring-boot-todo-app`. These URL's are dynamic and we cannot provide clickable links in advance. 
 
