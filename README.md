@@ -327,6 +327,14 @@ public interface TodoListRepository {
 
 Let's run this test. This will create the schema in our database.
 
+If you are not already there, change back into the project root:
+
+```
+cd /workspace/Spring-boot-todo-app/spring-boot-todo-app/
+```
+
+Then run the test.
+
 ```
 mvn test -Dtest=com.datastax.examples.CreateSchemaInAstraTest#should_create_expected_table
 ```
