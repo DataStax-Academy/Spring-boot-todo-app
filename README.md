@@ -45,7 +45,9 @@ Password: KVPassword
 
 If you already have an Astra database, you can reuse it, but please create a new keyspace by name `todoapp`:
 
-<img width="600" alt="Screenshot 2020-09-07 at 09 10 32" src="https://user-images.githubusercontent.com/20337262/92366057-902c6c80-f0ec-11ea-9903-897abc4a7ab8.png">
+![add-keyspace-annotated-1000](https://user-images.githubusercontent.com/23346205/96597300-aa489580-12bb-11eb-9b1c-030189ada29f.png)
+
+![add-keyspace-todo-save-annotated](https://user-images.githubusercontent.com/23346205/96597657-13c8a400-12bc-11eb-9ff2-f0f26044c4e7.png)
 
 **✅  Download the secure connection bundle to Gitpod** 
 
@@ -53,7 +55,9 @@ Once your database is created and ready to use, copy the secure connect bundle l
 
 The link is only valid for a short time, so you will need to proceed to the next step quickly before it expires. Refreshing your browser will generate you a new valid link. 
 
-<img width="600" alt="Screenshot 2020-09-07 at 09 10 01" src="https://user-images.githubusercontent.com/20337262/92366367-f6b18a80-f0ec-11ea-8532-da8644b49cd7.png">
+![connect-button-annotated](https://user-images.githubusercontent.com/23346205/96599127-99008880-12bd-11eb-9527-d3b69c9764a5.png)
+
+![connect-driver-bundle-annotated](https://user-images.githubusercontent.com/23346205/96599191-a7e73b00-12bd-11eb-974e-d24c859cfb1d.png)
 
 We will use the copied link to download the bundle to gitpod via curl. Insert your copied link here:
 
@@ -365,7 +369,7 @@ Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
 We can verify that the table has been created by logging into the Astra CQLSH console:
 
-<img width="500" alt="Screenshot 2020-09-07 at 09 24 44" src="https://user-images.githubusercontent.com/20337262/92366244-cbc73680-f0ec-11ea-8d49-e83daf6ab444.png">
+![cql-console-annotated](https://user-images.githubusercontent.com/23346205/96599863-59866c00-12be-11eb-837f-8779ccc2cd33.png)
 
 ```
 Logging in with cqlsh
