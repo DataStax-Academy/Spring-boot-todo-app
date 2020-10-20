@@ -35,13 +35,47 @@ If this is your first time using Astra, sign up here:
 
 You can use your `Github`, `Google` accounts or register with an `email`
 
+**✅ Use the form to create new database**
+
+On the Astra home page locate the **Add Database** button
+
+<img width="500" alt="db-creation-1" src="https://user-images.githubusercontent.com/23346205/96603461-09110d80-12c2-11eb-8e7d-9e55cc154347.png">
+
+Select the **free tier** plan, this is a true free tier, free forever and no payment method asked 🎉 🎉
+
+<img width="500" alt="db-creation-2" src="https://user-images.githubusercontent.com/23346205/96603424-02829600-12c2-11eb-8a04-325cc422ad3f.png">
+
+Select the proper region and click the `configure` button. The number of regions and cloud providers are limited in the free tier but please notice you can run the DB on any cloud with any VPC Peering.
+
+<img width="500" alt="db-creation-3" src="https://user-images.githubusercontent.com/23346205/96603676-3c539c80-12c2-11eb-91d8-2c3560802ded.png">
+
+Fill the `database name`, `keyspace name`, `username` and `password`. *Please remember your password as you will be asked to provide it when application start the first time.*
+
 If you use these signup details, you won't need to make many changes when following along.
 
 ```
+database: tododb
 keyspace: todoapp
 User: KVUser
 Password: KVPassword
 ```
+
+![db-creation-4-todo](https://user-images.githubusercontent.com/23346205/96605338-15966580-12c4-11eb-8ccc-0ebdaa503758.png)
+
+**✅ View your Database and connect**
+
+View your database. It may take 2-3 minutes for your database to spin up. You will receive an email at that point.
+
+**👁️ Expected output**
+
+*Initializing*
+
+![pending-database-todo](https://user-images.githubusercontent.com/23346205/96605695-7faf0a80-12c4-11eb-94be-e137b6c73dcb.png)
+
+Once the database is ready, notice how the status changes from `pending` to `Active` and Astra enables the **connect** button.
+
+![active-databsae-todo](https://user-images.githubusercontent.com/23346205/96605724-8a699f80-12c4-11eb-9b42-56b80e963e56.png)
+
 
 If you already have an Astra database, you can reuse it, but please create a new keyspace by name `todoapp`:
 
